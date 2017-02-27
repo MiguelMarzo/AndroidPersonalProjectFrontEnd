@@ -33,7 +33,7 @@ public class CustomListAdapter extends CursorAdapter {
         }
 
         TextView textViewId = (TextView) v.findViewById(R.id.idIdentifier);
-        textViewId.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("id"))));
+        textViewId.setText(String.valueOf(cursor.getInt(cursor.getColumnIndex("_id"))));
 
         TextView textViewNombre = (TextView) v.findViewById(R.id.idNombre);
         textViewNombre.setText(cursor.getString(cursor.getColumnIndex("nombre")));

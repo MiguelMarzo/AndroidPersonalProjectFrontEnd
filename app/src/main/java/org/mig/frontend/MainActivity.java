@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private ListView listView;
-    private String contentUri = "content://org.mig.frontend.sqlprovider.clients";
+    private String contentUri = "content://org.mig.frontend.sqlprovider";
     private CustomListAdapter customizedListAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ContentResolver contentResolver;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(0, null, this);
 
         account = CreateSyncAccount(this);
-        String authority = "org.mig.frontend.sqlprovider.clients";
+        String authority = "org.mig.frontend.sqlprovider";
 
         // Simple option, will handle everything smartly
         contentResolver = getContentResolver();
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements
         switch (item.getItemId()) {
             case 0:
                 Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
-                myIntent.putExtra("id", info.id);
+                myIntent.putExtra("_id", info.id);
                 startActivity(myIntent);
                 break;
             case 1:
@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements
 
         Log.d("PELLODEBUG", "Creating loader");
         return new CursorLoader(this, baseUri,  // The content URI of the words table
-                new String[]{"id", "direccion", "email", "nombre", "telefono", "idCiudad", "id_backend"},// The columns to return for each row
+                new String[]{"_id", "direccion", "email", "nombre", "telefono", "id_backend"},// The columns to return for each row
                 "",                // Selection criteria parameters
                 new String[]{""},  // Selection criteria values
                 "");               // The sort order for the returned rows
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true); // Performing a sync no matter if it's off
         // Simple option, will handle everything smartly
         contentResolver = getContentResolver();
-        contentResolver.requestSync(account, "org.mig.frontend.sqlprovider.clients", bundle);
+        contentResolver.requestSync(account, "org.mig.frontend.sqlprovider", bundle);
         Log.d("PELLODEBUG", "Sync now was pressed");
 
         // Stop refresh effect

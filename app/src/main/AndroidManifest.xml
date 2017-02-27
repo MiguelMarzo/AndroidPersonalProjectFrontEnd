@@ -23,10 +23,10 @@
         </activity>
         <provider
             android:name="DatabaseContentProvider"
-            android:authorities="org.mig.frontend.sqlprovider.clients"
+            android:authorities="org.mig.frontend.sqlprovider"
             android:enabled="true"
             android:exported="true">
-            <uses-permission android:name="org.mig.frontend.sqlprovider.clients.READ" />
+            <uses-permission android:name="org.mig.frontend.sqlprovider.READ" />
         </provider>
 
         <service

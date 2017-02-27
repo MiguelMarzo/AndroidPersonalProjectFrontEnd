@@ -34,7 +34,7 @@ public class AddActivity extends AppCompatActivity {
             if (id != null) {
                 Cursor cursor = getContentResolver().query(
                         Uri.parse(contentUri + "/client/id"),   // The content URI
-                        new String[]{"id", "nombre", "direccion", "email", "telefono", "idCiudad"},
+                        new String[]{"_id", "nombre", "direccion", "email", "telefono"},
                         "",                        // The columns to return for each row
                         new String[]{String.valueOf(id)},                     // Selection criteria
                         ""
@@ -45,12 +45,11 @@ public class AddActivity extends AppCompatActivity {
                     client = new Client();
                     cursor.moveToFirst();
                     while (cursor.isAfterLast() == false) {
-                        client.setId(cursor.getInt(cursor.getColumnIndex("id")));
+                        client.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                         client.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
                         client.setDireccion(cursor.getString(cursor.getColumnIndex("direccion")));
                         client.setEmail(cursor.getString(cursor.getColumnIndex("email")));
                         client.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
-                        client.setIdCiudad(cursor.getInt(cursor.getColumnIndex("idCiudad")));
 
                         editTextNombre.setText(client.getNombre());
                         editTextEmail.setText(client.getEmail());
@@ -75,7 +74,7 @@ public class AddActivity extends AppCompatActivity {
 
 
         if (isUpdating) {
-            contentValues.put("id", client.getId());
+            contentValues.put("_id", client.getId());
             contentValues.put("id_backend", client.getId_backend());
 
             int rows = getContentResolver().update(

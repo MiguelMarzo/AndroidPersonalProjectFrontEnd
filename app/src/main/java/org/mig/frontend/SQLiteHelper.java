@@ -22,9 +22,16 @@ class SQLiteHelper extends SQLiteOpenHelper {
             " email text not null," +
             " direccion text not null," +
             " telefono text not null," +
-            " idCiudad integer not null," +
             " id_backend integer not null default 0);";
-
+    public static final String SQLDDLDELETED = "CREATE TABLE " + "deleted" +
+            " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            " " + "id_backend" + " INTEGER NOT NULL);";
+    public static final String SQLDDLUPDATED = "CREATE TABLE " + "updated" +
+            " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            " " + "nombre" + " TEXT NOT NULL," +
+            " " + "direccion" + " TEXT NOT NULL," +
+            " " + "telefono" + " TEXT NOT NULL," +
+            " " + "id_backend" + " INTEGER NOT NULL DEFAULT 0);";
 
     /**
      * Constructor
@@ -44,8 +51,12 @@ class SQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         // Se ejecuta la sentencia de creación de la tabla notas.
         db.execSQL("DROP TABLE IF EXISTS clients");
+        db.execSQL("DROP TABLE IF EXISTS updated");
+        db.execSQL("DROP TABLE IF EXISTS deleted");
         db.execSQL(SQLCREAR);
-        Log.d("DEBUG","Ok, BD creada");
+        db.execSQL(SQLDDLDELETED);
+        db.execSQL(SQLDDLUPDATED);
+        Log.d("DEBUG", "Ok, DB CREATED!");
     }
 
     /**
@@ -63,6 +74,8 @@ class SQLiteHelper extends SQLiteOpenHelper {
         // En este caso en el upgrade realmente
         // lo que hacemos es cargarnos lo que hay...
         db.execSQL("DROP TABLE IF EXISTS clients");
+        db.execSQL("DROP TABLE IF EXISTS updated");
+        db.execSQL("DROP TABLE IF EXISTS deleted");
 
         // ... y lo volvemos a generar
         onCreate(db);

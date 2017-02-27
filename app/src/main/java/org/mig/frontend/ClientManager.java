@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ClientManager {
-	private static final String URL = "http://localhost:8080"; //replace with real URL
+	private static final String URL = "http://192.168.1.107:8080"; //replace with real URL
 
 	private ClientApiClient clientApiClient; 
 	

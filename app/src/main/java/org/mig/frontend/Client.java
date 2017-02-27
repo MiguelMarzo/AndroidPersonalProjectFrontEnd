@@ -18,21 +18,18 @@ public class Client {
     @Expose
     public String telefono;
     @Expose
-    public Integer idCiudad;
-    @Expose
     private Integer id_backend;
 
     public Client(){
 
     }
 
-    public Client(int id, String direccion, String email, String nombre, String telefono, int idCiudad) {
+    public Client(int id, String direccion, String email, String nombre, String telefono) {
         this.id = id;
         this.direccion = direccion;
         this.email = email;
         this.nombre = nombre;
         this.telefono = telefono;
-        this.idCiudad = idCiudad;
     }
 
     public int getId() {
@@ -75,13 +72,6 @@ public class Client {
         this.telefono = telefono;
     }
 
-    public int getIdCiudad() {
-        return idCiudad;
-    }
-
-    public void setIdCiudad(int idCiudad) {
-        this.idCiudad = idCiudad;
-    }
 
     public Integer getId_backend() {
         return id_backend;
@@ -99,7 +89,6 @@ public class Client {
                 ", email='" + email + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", telefono='" + telefono + '\'' +
-                ", idCiudad=" + idCiudad +
                 ", id_backend=" + id_backend +
                 '}';
     }

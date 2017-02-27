@@ -42,11 +42,33 @@ public class DatabaseContentProvider extends ContentProvider {
     private void initUris() {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        // This will match: content://org.mig.frontend_personalproject.sqlprovider.clients/clients
-        uriMatcher.addURI("org.mig.frontend.sqlprovider.clients", "clients/", 1);
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider/clients
+        uriMatcher.addURI("org.mig.frontend.sqlprovider", "clients/", 1);
 
-        // This will match: content://org.mig.frontend_personalproject.sqlprovider.clients/clients/2
-        uriMatcher.addURI("org.mig.frontend.sqlprovider.clients", "clients/*/", 2);
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider/clients/id
+        uriMatcher.addURI("org.mig.frontend.sqlprovider", "clients/id", 2);
+
+        // the last one from the backend
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider/clients/last/backend
+        uriMatcher.addURI("org.mig.frontend.sqlprovider", "clients/last/backend", 3);
+
+        // This will match:  content://org.mig.frontend_personalproject.sqlprovider/clients/last/local
+        uriMatcher.addURI("org.mig.frontend.sqlprovider", "clients/last/local", 4);
+
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider/deleted
+        uriMatcher.addURI("org.mig.frontend.sqlprovider", "deleted", 5);
+
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider/delete/deleted
+        uriMatcher.addURI("org.mig.frontend.sqlprovider","delete/deleted", 6);
+
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider/delete/currencies
+        uriMatcher.addURI("org.mig.frontend.sqlprovider", "delete/clients", 7);
+
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider/delete/updated
+        uriMatcher.addURI("org.mig.frontend.sqlprovider", "delete/updated", 8);
+
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider/updated
+        uriMatcher.addURI("org.mig.frontend.sqlprovider", "updated", 9);
     }
 
 
@@ -60,16 +82,35 @@ public class DatabaseContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
-
+        Cursor c;
         Log.d("MigDebug","CP> query " + uri+ " match:" + uriMatcher.match(uri));
         switch (uriMatcher.match(uri)) {
             case 1:
-                Log.d("MigDebug","query to 1. ");
-                return dbAdapter.obtenerClientes();
+                Log.d("MigDebug", "query to 1. ");
+                c = dbAdapter.obtenerClientes();
+                return c;
             case 2:
-                Log.d("MigDebug","query to 2. " + uri.getLastPathSegment());
+                Log.d("MigDebug", "query to 2. " + uri.getLastPathSegment());
+                return dbAdapter.obtenerCliente(Long.valueOf(selectionArgs[0]));
+            case 3:
+                Log.d("MigDebug", "query to 3. " + uri.getLastPathSegment());
+                c = dbAdapter.getLastBackendRow();
+                return c;
+            case 4:
+                Log.d("MigDebug", "query to 4. " + uri.getLastPathSegment());
+                c = dbAdapter.getLastLocalRow();
+                return c;
+            case 5:
+                Log.d("MigDebug", "query to 5. " + uri.getLastPathSegment());
+                c = dbAdapter.getDeleted();
+                return c;
+            case 9:
+                Log.d("MigDebug", "query to 9. " + uri.getLastPathSegment());
+                c = dbAdapter.getUpdated();
+                return c;
+            default:
                 break;
-            default:	break;
+
         }
         return mCursor;
     }
@@ -97,7 +138,7 @@ public class DatabaseContentProvider extends ContentProvider {
 
         //dbAdapter.insertarCliente(values.getAsString("client"));
 
-        Uri resultUri = Uri.parse("content://org.mig.frontend.sqlprovider.clients/1");
+        Uri resultUri = Uri.parse("content://org.mig.frontend.sqlprovider/1");
         return resultUri;
 
     }

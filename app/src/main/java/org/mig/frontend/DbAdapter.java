@@ -73,7 +73,6 @@ public class DbAdapter {
         registro.put("email", client.email);
         registro.put("nombre", client.nombre);
         registro.put("telefono", client.telefono);
-        registro.put("idCiudad", client.idCiudad);
         registro.put("id_backend", client.getId_backend());
 
 
@@ -89,7 +88,7 @@ public class DbAdapter {
      * @return Devuelve el nº de registros afectados.
      */
     public int borrarCliente(long idCliente) {
-        return db.delete("clients",  "id = "
+        return db.delete("clients",  "_id = "
                 + idCliente, null);
     }
 
@@ -114,8 +113,8 @@ public class DbAdapter {
      * @throws SQLException
      */
     public Cursor obtenerCliente (long idCliente) throws SQLException {
-        Cursor registro = db.query(true, "clients",new String[] { "id","nombre"},
-                "id =" + idCliente, null, null, null, null, null);
+        Cursor registro = db.query(true, "clients",new String[] { "_id","nombre"},
+                "_id =" + idCliente, null, null, null, null, null);
 
         // Si lo ha encontrado, apunta al inicio del cursor.
         if (registro != null) {
@@ -141,12 +140,37 @@ public class DbAdapter {
         cliente.put("email", client.email);
         cliente.put("nombre", client.nombre);
         cliente.put("telefono", client.telefono);
-        cliente.put("idCiudad", client.idCiudad);
         cliente.put("id_backend", client.getId_backend());
 
         // Inserta el registro y devuelve el resultado.
         return db.update("clients", cliente,
                 "id=" + idCliente, null);
+    }
+    public Cursor getDeleted() {
+        return db.query("deleted", new String[]{"id_backend"}, null, null, null, null, null);
+    }
+
+    public Cursor getLastBackendRow() throws SQLException {
+        Cursor row = db.query(true, "clients", new String[]{"_id", "nombre", "direccion", "email", "telefono", "id_backend"},
+                null, null, null, null, "id_backend" + " DESC", " 1");
+        if (row != null) {
+            row.moveToFirst();
+        }
+        return row;
+    }
+
+    public Cursor getLastLocalRow() throws SQLException {
+        Cursor row = db.query(true, "clients", new String[]{"_id", "nombre", "direccion", "email", "telefono", "id_backend"},
+                "id_backend" + " = 0", null, null, null, null, null); // limit 1 ???
+
+        if (row != null) {
+            row.moveToFirst();
+        }
+        return row;
+    }
+
+    public Cursor getUpdated() {
+        return db.query("updated", new String[]{"_id", "nombre", "direccion", "email", "telefono", "id_backend"}, null, null, null, null, null);
     }
 
 }

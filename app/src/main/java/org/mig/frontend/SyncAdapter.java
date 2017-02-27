@@ -21,7 +21,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private final AccountManager mAccountManager;
     private ContentResolver contentResolver;
     private ClientManager clientManager;
-    private String contentUri = "content://org.mig.frontend.sqlprovider.clients";
+    private String contentUri = "content://org.mig.frontend.sqlprovider";
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -52,17 +52,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         try {
 
-            deleteLocalOnBackend(cursor, provider);
+            //deleteLocalOnBackend(cursor, provider);
 
-            deleteAllFromDeleted(provider);
+            //deleteAllFromDeleted(provider);
 
-            updateLocalOnBackend(cursor, provider);
+            //updateLocalOnBackend(cursor, provider);
 
-            deleteAllFromUpdated(provider);
+            //deleteAllFromUpdated(provider);
 
             updateFromBackend(cursor, provider);
 
-            addFromLocalToBackend(cursor, provider);
+            //addFromLocalToBackend(cursor, provider);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,7 +101,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void updateLocalOnBackend(Cursor cursor, ContentProviderClient provider) throws RemoteException {
         cursor = provider.query(
                 Uri.parse(contentUri + "/updated"),
-                new String[]{"_id", "nombre", "direccion", "email", "telefono", "idCiudad"},
+                new String[]{"_id", "nombre", "direccion", "email", "telefono"},
                 "",
                 new String[]{""},
                 "");
@@ -116,7 +116,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 client.setEmail(cursor.getString(cursor.getColumnIndex("email")));
                 client.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
                 client.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
-                client.setIdCiudad(cursor.getInt(cursor.getColumnIndex("idCiudad")));
 
                 clientManager.updateClient(client);
                 cursor.moveToNext();
@@ -135,10 +134,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private void updateFromBackend(Cursor cursor, ContentProviderClient provider) throws RemoteException {
         int lastBackendId = 0;
 
-        // Get Last backend_id locally
+        // Get Last backend id locally
         cursor = provider.query(
                 Uri.parse(contentUri + "/clients/last/backend"),
-                new String[]{"_id", "nombre", "direccion", "email", "telefono", "idCiudad"},
+                new String[]{"_id", "nombre", "direccion", "email", "telefono"},
                 "",                        // The columns to return for each row
                 new String[]{""},                     // Selection criteria
                 "");
@@ -155,12 +154,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         for (Client client : clients) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put("id", client.getId());
+            contentValues.put("_id", client.getId());
             contentValues.put("name", client.getNombre());
             contentValues.put("email", client.getEmail());
             contentValues.put("telefono", client.getTelefono());
             contentValues.put("direccion", client.getDireccion());
-            contentValues.put("idCiudad", client.getIdCiudad());
 
             // We finally make the request to the content provider
             Uri resultUri = provider.insert(
@@ -178,7 +176,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // send them to backend
         cursor = provider.query(
                 Uri.parse(contentUri + "/clients/last/local"),   // The content URI of the words table
-                new String[]{"_id", "nombre", "direccion", "email", "telefono", "idCiudad"},
+                new String[]{"_id", "nombre", "direccion", "email", "telefono"},
                 "",                        // The columns to return for each row
                 new String[]{""},                     // Selection criteria
                 "");
