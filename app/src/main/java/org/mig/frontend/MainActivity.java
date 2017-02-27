@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     private ListView listView;
-    private String contentUri = "content://org.mig.frontend.sqlprovider";
+    private String contentUri = "content://org.mig.frontend.sqlprovider.clients";
     private CustomListAdapter customizedListAdapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ContentResolver contentResolver;
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
         getLoaderManager().initLoader(0, null, this);
 
         account = CreateSyncAccount(this);
-        String authority = "org.mig.frontend.sqlprovider";
+        String authority = "org.mig.frontend.sqlprovider.clients";
 
         // Simple option, will handle everything smartly
         contentResolver = getContentResolver();
@@ -127,19 +127,19 @@ public class MainActivity extends AppCompatActivity implements
          * Add the account and account type, no password or user data
          * If successful, return the Account object, otherwise report an error.
          */
-        //if (accountManager.addAccountExplicitly(newAccount, null, null)) {
+        if (accountManager.addAccountExplicitly(newAccount, null, null)) {
             /*
              * If you don't set android:syncable="true" in
              * in your <provider> element in the manifest,
              * then call context.setIsSyncable(account, AUTHORITY, 1)
              * here.
              */
-        //} else {
+        } else {
             /*
              * The account exists or some other error occurred. Log this, report it,
              * or handle it internally.
              */
-        //}
+        }
         return newAccount;
     }
 
@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements
         bundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true); // Performing a sync no matter if it's off
         // Simple option, will handle everything smartly
         contentResolver = getContentResolver();
-        contentResolver.requestSync(account, "org.mig.frontend.sqlprovider", bundle);
+        contentResolver.requestSync(account, "org.mig.frontend.sqlprovider.clients", bundle);
         Log.d("PELLODEBUG", "Sync now was pressed");
 
         // Stop refresh effect

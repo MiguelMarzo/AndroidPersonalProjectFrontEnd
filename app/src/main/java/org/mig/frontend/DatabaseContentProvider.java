@@ -42,11 +42,11 @@ public class DatabaseContentProvider extends ContentProvider {
     private void initUris() {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        // This will match: content://org.mig.frontend_personalproject.sqlprovider.Todo/cliente
-        uriMatcher.addURI("org.mig.frontend.sqlprovider", "clients/", 1);
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider.clients/clients
+        uriMatcher.addURI("org.mig.frontend.sqlprovider.clients", "clients/", 1);
 
-        // This will match: content://org.mig.frontend_personalproject.sqlprovider.Todo/cliente/2
-        uriMatcher.addURI("org.mig.frontend.sqlprovider", "clients/*/", 2);
+        // This will match: content://org.mig.frontend_personalproject.sqlprovider.clients/clients/2
+        uriMatcher.addURI("org.mig.frontend.sqlprovider.clients", "clients/*/", 2);
     }
 
 
@@ -97,7 +97,7 @@ public class DatabaseContentProvider extends ContentProvider {
 
         //dbAdapter.insertarCliente(values.getAsString("client"));
 
-        Uri resultUri = Uri.parse("content://org.mig.frontend.sqlprovider.Todo/1");
+        Uri resultUri = Uri.parse("content://org.mig.frontend.sqlprovider.clients/1");
         return resultUri;
 
     }

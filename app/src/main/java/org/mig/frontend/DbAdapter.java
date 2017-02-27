@@ -100,7 +100,9 @@ public class DbAdapter {
      * @return Cursor Devuelve un cursor con los registros obtenidos.
      */
     public Cursor obtenerClientes() {
-        return db.query("clients", new String[] {"_id","direccion"}, null, null, null, null, null);
+        Log.d("DEBUG","OBTENER CLIENTES");
+        return db.query("clients", new String[] {"_id","nombre"}, null, null, null, null, null);
+
     }
 
     /**

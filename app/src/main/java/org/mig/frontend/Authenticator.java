@@ -15,7 +15,7 @@ import android.os.Bundle;
 public class Authenticator extends AbstractAccountAuthenticator {
 
 
-    public static final String ACCOUNT_TYPE = "org.mig.frontend.android";
+    public static final String ACCOUNT_TYPE = "org.mig.frontend.android.acc";
     public static final String ACCOUNT_NAME = "DUMMY ACCOUNT";
     private Activity activity;
     private IntentFilter.AuthorityEntry authority; // check type

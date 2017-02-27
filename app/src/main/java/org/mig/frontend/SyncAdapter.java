@@ -21,7 +21,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     private final AccountManager mAccountManager;
     private ContentResolver contentResolver;
     private ClientManager clientManager;
-    private String contentUri = "content://org.mig.frontend.sqlprovider";
+    private String contentUri = "content://org.mig.frontend.sqlprovider.clients";
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
