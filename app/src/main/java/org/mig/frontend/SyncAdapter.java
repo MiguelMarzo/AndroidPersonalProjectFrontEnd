@@ -52,17 +52,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
         try {
 
-            //deleteLocalOnBackend(cursor, provider);
+            deleteLocalOnBackend(cursor, provider);
 
-            //deleteAllFromDeleted(provider);
+            deleteAllFromDeleted(provider);
 
-            //updateLocalOnBackend(cursor, provider);
+            updateLocalOnBackend(cursor, provider);
 
-            //deleteAllFromUpdated(provider);
+            deleteAllFromUpdated(provider);
 
             updateFromBackend(cursor, provider);
 
-            //addFromLocalToBackend(cursor, provider);
+            addFromLocalToBackend(cursor, provider);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +137,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Get Last backend id locally
         cursor = provider.query(
                 Uri.parse(contentUri + "/clients/last/backend"),
-                new String[]{"_id", "nombre", "direccion", "email", "telefono"},
+                new String[]{"_id", "nombre", "email", "direccion", "telefono"},
                 "",                        // The columns to return for each row
                 new String[]{""},                     // Selection criteria
                 "");
@@ -190,7 +190,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             while (cursor.isAfterLast() == false) {
 
                 Client client = new Client();
-                client.setNombre(cursor.getString(cursor.getColumnIndex("_id")));
+                client.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 client.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
                 client.setDireccion(cursor.getString(cursor.getColumnIndex("direccion")));
                 client.setEmail(cursor.getString(cursor.getColumnIndex("email")));

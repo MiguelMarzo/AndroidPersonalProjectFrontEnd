@@ -29,6 +29,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
     public static final String SQLDDLUPDATED = "CREATE TABLE " + "updated" +
             " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             " " + "nombre" + " TEXT NOT NULL," +
+            " " + "email" + " TEXT NOT NULL," +
             " " + "direccion" + " TEXT NOT NULL," +
             " " + "telefono" + " TEXT NOT NULL," +
             " " + "id_backend" + " INTEGER NOT NULL DEFAULT 0);";

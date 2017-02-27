@@ -87,9 +87,25 @@ public class DbAdapter {
      * @param idCliente id del registro a borrar
      * @return Devuelve el nº de registros afectados.
      */
-    public int borrarCliente(long idCliente) {
-        return db.delete("clients",  "_id = "
-                + idCliente, null);
+    public int deleteClient(long idCliente) {
+        addToDeleted(idCliente);
+        return db.delete("clients", "id" + "=?", new String[]{String.valueOf(idCliente)});
+    }
+    private void addToDeleted(long id) {
+        Cursor cursor = db.query(true, "clients", new String[]{"id_backend"}, "id" + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+        int id_backend = cursor.getInt(cursor.getColumnIndex("id_backend"));
+
+        ContentValues row = new ContentValues();
+        row.put("id_backend", id_backend);
+
+        db.insert("deleted", null, row);
+    }
+
+    public int deleteUpdated() {
+        return db.delete("updated", null, null);
     }
 
     /**
@@ -100,7 +116,7 @@ public class DbAdapter {
      */
     public Cursor obtenerClientes() {
         Log.d("DEBUG","OBTENER CLIENTES");
-        return db.query("clients", new String[] {"_id","nombre"}, null, null, null, null, null);
+        return db.query("clients", new String[] {"_id","nombre", "email", "direccion", "telefono", "id_backend"}, null, null, null, null, null);
 
     }
 
@@ -170,7 +186,11 @@ public class DbAdapter {
     }
 
     public Cursor getUpdated() {
-        return db.query("updated", new String[]{"_id", "nombre", "direccion", "email", "telefono", "id_backend"}, null, null, null, null, null);
+        return db.query("updated", new String[]{"_id", "nombre", "email", "direccion", "telefono", "id_backend"}, null, null, null, null, null);
+    }
+
+    public int deleteDeleted() {
+        return db.delete("deleted", null, null);
     }
 
 }

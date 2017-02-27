@@ -153,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements
 
         baseUri = Uri.parse(this.contentUri + "/clients");
 
-        Log.d("PELLODEBUG", "Creating loader");
+        Log.d("MigDebug", "Creating loader");
         return new CursorLoader(this, baseUri,  // The content URI of the words table
-                new String[]{"_id", "direccion", "email", "nombre", "telefono", "id_backend"},// The columns to return for each row
+                new String[]{"_id", "nombre", "email", "direccion", "telefono", "id_backend"},// The columns to return for each row
                 "",                // Selection criteria parameters
                 new String[]{""},  // Selection criteria values
                 "");               // The sort order for the returned rows

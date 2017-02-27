@@ -118,10 +118,27 @@ public class DatabaseContentProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        Log.d("MigDebug","CP> " + uri);
-        //return dbAdapter.borrarCliente(Client c);
+        Log.d("DEBUG", "ContentProvider> delete " + uri + " match:" + uriMatcher.match(uri));
         // Implement this to handle requests to delete one or more rows.
-        throw new UnsupportedOperationException("Not yet implemented");
+        int rows = 0;
+        switch (uriMatcher.match(uri)) {
+            case 6:
+                rows = dbAdapter.deleteDeleted();
+                getContext().getContentResolver().notifyChange(uri, null);
+                return rows;
+            case 7:
+                rows = dbAdapter.deleteClient(Integer.valueOf(selectionArgs[0]));
+                getContext().getContentResolver().notifyChange(uri, null);
+                return rows;
+            case 8:
+                rows = dbAdapter.deleteUpdated();
+                getContext().getContentResolver().notifyChange(uri, null);
+                return rows;
+            default:
+                break;
+        }
+        return rows;
+
     }
 
     @Override
