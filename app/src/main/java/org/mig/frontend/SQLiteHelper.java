@@ -9,7 +9,7 @@ import android.util.Log;
  * SqLiteHelper
  * La clase se encarga de inicializar la BBDD -si no existe-, de actualizarla
  *
- * @author pello xabier altadill
+ * @author Miguel Marzo
  *
  */
 class SQLiteHelper extends SQLiteOpenHelper {
@@ -22,7 +22,10 @@ class SQLiteHelper extends SQLiteOpenHelper {
             " email text not null," +
             " direccion text not null," +
             " telefono text not null," +
-            " id_backend integer not null default 0);";
+            " id_backend integer not null default 0);" +
+            " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);"+
+            " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);"+
+            " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);";
     public static final String SQLDDLDELETED = "CREATE TABLE " + "deleted" +
             " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             " " + "id_backend" + " INTEGER NOT NULL);";

@@ -166,16 +166,17 @@ public class MainActivity extends AppCompatActivity implements
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         // Swap the new cursor in.  (The framework will take care of closing the
         // old cursor once we return.)
+        Log.d("PELLODEBUG", "Total records: " + cursor.getCount());
         customizedListAdapter.swapCursor(cursor);
 
         cursor.moveToFirst();
         String data = "";
+        //Al cambiar a (!cursor.isLast()) crashea por OutOfBounds..
         while (!cursor.isAfterLast()) {
             data += "\n" + cursor.getString(1);
             cursor.moveToNext();
+            Log.d("PELLODEBUG", "Data: " + data);
         }
-        Log.d("PELLODEBUG", "Total records: " + cursor.getCount());
-
     }
 
     @Override

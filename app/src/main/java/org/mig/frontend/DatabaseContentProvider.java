@@ -14,7 +14,7 @@ public class DatabaseContentProvider extends ContentProvider {
     // So we can give different values depending on those params
     private  UriMatcher uriMatcher;
     // Our data:
-    private MatrixCursor mCursor;
+    private Cursor mCursor;
     private DbAdapter dbAdapter;
     /**
      * default constructor.
@@ -87,8 +87,8 @@ public class DatabaseContentProvider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case 1:
                 Log.d("MigDebug", "query to 1. ");
-                c = dbAdapter.obtenerClientes();
-                return c;
+                mCursor = dbAdapter.obtenerClientes();
+                break;
             case 2:
                 Log.d("MigDebug", "query to 2. " + uri.getLastPathSegment());
                 return dbAdapter.obtenerCliente(Long.valueOf(selectionArgs[0]));
