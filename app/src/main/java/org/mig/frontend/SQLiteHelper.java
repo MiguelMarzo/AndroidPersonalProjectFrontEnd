@@ -22,8 +22,8 @@ class SQLiteHelper extends SQLiteOpenHelper {
             " email text not null," +
             " direccion text not null," +
             " telefono text not null," +
-            " id_backend integer not null default 0);" +
-            " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);"+
+            " id_backend integer not null default 0);";
+    public static final String SQLINSERT = " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);"+
             " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);"+
             " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);";
     public static final String SQLDDLDELETED = "CREATE TABLE " + "deleted" +
@@ -60,6 +60,7 @@ class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(SQLCREAR);
         db.execSQL(SQLDDLDELETED);
         db.execSQL(SQLDDLUPDATED);
+        db.execSQL(SQLINSERT);
         Log.d("DEBUG", "Ok, DB CREATED!");
     }
 
