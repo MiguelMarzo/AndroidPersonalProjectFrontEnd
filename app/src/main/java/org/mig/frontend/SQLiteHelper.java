@@ -15,7 +15,7 @@ import android.util.Log;
 class SQLiteHelper extends SQLiteOpenHelper {
 
     public static final String NOMBRE_BD = "hibernatemvc.db";
-    public static final int VERSION_BD = 1;
+    public static final int VERSION_BD = 2;
     public static final String SQLCREAR = "create table clients "+
             " (_id integer primary key autoincrement, " +
             " nombre text not null," +
@@ -23,9 +23,9 @@ class SQLiteHelper extends SQLiteOpenHelper {
             " direccion text not null," +
             " telefono text not null," +
             " id_backend integer not null default 0);";
-    public static final String SQLINSERT = " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);"+
-            " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);"+
-            " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);";
+    public static final String SQLINSERT1 = " insert into clients values(null, 'Mig', 'mig@mail', 'asdasd', '11234', 8);";
+    public static final String SQLINSERT2 = " insert into clients values(null, 'David', 'dav@mail', 'qweqweqwe', '11234', 8);";
+    public static final String SQLINSERT3 = " insert into clients values(null, 'Aritz', 'artz@mail', 'zxczxczxc', '11234', 8);";
     public static final String SQLDDLDELETED = "CREATE TABLE " + "deleted" +
             " (" + "_id" + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             " " + "id_backend" + " INTEGER NOT NULL);";
@@ -60,7 +60,9 @@ class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(SQLCREAR);
         db.execSQL(SQLDDLDELETED);
         db.execSQL(SQLDDLUPDATED);
-        db.execSQL(SQLINSERT);
+        db.execSQL(SQLINSERT1);
+        db.execSQL(SQLINSERT2);
+        db.execSQL(SQLINSERT3);
         Log.d("DEBUG", "Ok, DB CREATED!");
     }
 

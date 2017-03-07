@@ -71,9 +71,6 @@ public class DatabaseContentProvider extends ContentProvider {
         uriMatcher.addURI("org.mig.frontend.sqlprovider", "updated", 9);
     }
 
-
-
-
     /**
      * we query the database, depending on uriMatcher we can execute
      * different queries.
@@ -152,10 +149,16 @@ public class DatabaseContentProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         Log.d("MigDebug","CP> insert " + uri);
-
-        //dbAdapter.insertarCliente(values.getAsString("client"));
-
-        Uri resultUri = Uri.parse("content://org.mig.frontend.sqlprovider/1");
+        Client client = new Client();
+        client.setId(values.getAsInteger("_id"));
+        client.setNombre(values.getAsString("name"));
+        client.setDireccion(values.getAsString("direccion"));
+        client.setTelefono(values.getAsString("telefono"));
+        client.setEmail(values.getAsString("email"));
+        client.setId_backend(values.getAsInteger("_id"));
+        dbAdapter.insertarCliente(client);
+        getContext().getContentResolver().notifyChange(uri, null);
+        Uri resultUri = Uri.parse("content://org.mig.frontend.sqlprovider" + "clients");
         return resultUri;
 
     }
