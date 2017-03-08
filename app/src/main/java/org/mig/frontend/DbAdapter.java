@@ -69,12 +69,13 @@ public class DbAdapter {
         ContentValues registro = new ContentValues();
 
         // Agrega los datos.
+        //registro.put("_id", client.getId());
         registro.put("direccion", client.direccion);
         registro.put("email", client.email);
         registro.put("nombre", client.nombre);
         registro.put("telefono", client.telefono);
         registro.put("id_backend", client.getId_backend());
-
+        Log.d("MigDebug","ESTOY APUNTO DE INSERTAR EN BD LOCAL");
 
         // Inserta el registro y devuelve el resultado.
         return db.insert("clients", null, registro);
@@ -89,10 +90,10 @@ public class DbAdapter {
      */
     public int deleteClient(long idCliente) {
         addToDeleted(idCliente);
-        return db.delete("clients", "id" + "=?", new String[]{String.valueOf(idCliente)});
+        return db.delete("clients", "_id" + "=?", new String[]{String.valueOf(idCliente)});
     }
     private void addToDeleted(long id) {
-        Cursor cursor = db.query(true, "clients", new String[]{"id_backend"}, "id" + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
+        Cursor cursor = db.query(true, "clients", new String[]{"id_backend"}, "_id" + "=?", new String[]{String.valueOf(id)}, null, null, null, null);
         if (cursor != null) {
             cursor.moveToFirst();
         }
@@ -103,6 +104,7 @@ public class DbAdapter {
 
         db.insert("deleted", null, row);
     }
+
 
     public int deleteUpdated() {
         return db.delete("updated", null, null);
@@ -129,14 +131,13 @@ public class DbAdapter {
      * @throws SQLException
      */
     public Cursor obtenerCliente (long idCliente) throws SQLException {
-        Cursor registro = db.query(true, "clients",new String[] { "_id","nombre"},
-                "_id =" + idCliente, null, null, null, null, null);
+        Cursor row = db.query(true, "clients", new String[]{"_id", "nombre", "email", "direccion", "telefono", "id_backend"},
+                "_id" + "=?", new String[]{String.valueOf(idCliente)}, null, null, null, null);
 
-        // Si lo ha encontrado, apunta al inicio del cursor.
-        if (registro != null) {
-            registro.moveToFirst();
+        if (row != null) {
+            row.moveToFirst();
         }
-        return registro;
+        return row;
     }
 
     /**
@@ -148,6 +149,7 @@ public class DbAdapter {
      * @return int cantidad registros han sido afectados.
      */
     public int actualizarCliente(long idCliente, Client client) {
+        addToUpdated(idCliente, client);
         // Creamos un registro
         ContentValues cliente = new ContentValues();
 
@@ -156,11 +158,23 @@ public class DbAdapter {
         cliente.put("email", client.email);
         cliente.put("nombre", client.nombre);
         cliente.put("telefono", client.telefono);
-        cliente.put("id_backend", client.getId_backend());
+        //cliente.put("id_backend", client.getId_backend());
 
         // Inserta el registro y devuelve el resultado.
         return db.update("clients", cliente,
-                "id=" + idCliente, null);
+                "_id=" + idCliente, null);
+    }
+
+    private long addToUpdated(long id, Client client) {
+        ContentValues row = new ContentValues();
+        row.put("nombre", client.getNombre());
+        row.put("_id", id);
+        row.put("email", client.getEmail());
+        row.put("telefono", client.getTelefono());
+        row.put("direccion", client.getDireccion());
+        row.put("id_backend", client.getId_backend());
+
+        return db.insert("updated", null, row);
     }
     public Cursor getDeleted() {
         return db.query("deleted", new String[]{"id_backend"}, null, null, null, null, null);

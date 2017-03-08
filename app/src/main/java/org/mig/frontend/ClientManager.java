@@ -114,8 +114,8 @@ public class ClientManager {
 	 * @param client
 	 * @return
 	 */
-	public boolean updateClient(Client client) {
-		Call<Void> itemApiCall = clientApiClient.update(client);
+	public boolean updateClient(Integer id, Client client) {
+		Call<Void> itemApiCall = clientApiClient.update(id ,client);
 		boolean result = false;
 		
 		try {

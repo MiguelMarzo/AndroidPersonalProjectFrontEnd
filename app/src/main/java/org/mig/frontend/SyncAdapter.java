@@ -105,7 +105,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 "",
                 new String[]{""},
                 "");
-
+        Log.d("MigDebug","UPDATING ON BACKEND");
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ContentValues contentValues = null;
@@ -116,8 +116,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 client.setEmail(cursor.getString(cursor.getColumnIndex("email")));
                 client.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
                 client.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
+                client.setId_backend(cursor.getInt(cursor.getColumnIndex("id_backend")));
 
-                clientManager.updateClient(client);
+                clientManager.updateClient(client.getId_backend(),client);
                 cursor.moveToNext();
             }
         }
@@ -137,7 +138,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // Get Last backend id locally
         cursor = provider.query(
                 Uri.parse(contentUri + "/clients/last/backend"),
-                new String[]{"_id", "nombre", "email", "direccion", "telefono"},
+                new String[]{"_id", "nombre", "email", "direccion", "telefono", "id_backend"},
                 "",                        // The columns to return for each row
                 new String[]{""},                     // Selection criteria
                 "");
@@ -149,16 +150,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d("DEBUG'", "Last backend Id: " + lastBackendId);
 
         // Get currencies from the remote server
-        List<Client> clients = clientManager.getClients();
-        Log.d("DEBUG", clients.toString());
+        List<Client> clients = clientManager.getLastClients(lastBackendId);
+        // Log.d("DEBUG", clients.toString());
 
         for (Client client : clients) {
             ContentValues contentValues = new ContentValues();
             contentValues.put("_id", client.getId());
-            contentValues.put("name", client.getNombre());
+            contentValues.put("nombre", client.getNombre());
             contentValues.put("email", client.getEmail());
             contentValues.put("telefono", client.getTelefono());
             contentValues.put("direccion", client.getDireccion());
+            contentValues.put("id_backend", client.getId());
 
             // We finally make the request to the content provider
             Uri resultUri = provider.insert(
@@ -176,33 +178,32 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         // send them to backend
         cursor = provider.query(
                 Uri.parse(contentUri + "/clients/last/local"),   // The content URI of the words table
-                new String[]{"_id", "nombre", "direccion", "email", "telefono"},
+                new String[]{"_id", "nombre", "direccion", "email", "telefono", "id_backend"},
                 "",                        // The columns to return for each row
                 new String[]{""},                     // Selection criteria
                 "");
         if (cursor.getCount() > 0) {
             lastLocalId = cursor.getInt(0);
-            Log.d("PELLODEBUG", "Last local Id: " + cursor.getString(0));
+            Log.d("MigDebug", "Last local Id: " + cursor.getString(0));
 
-            // send array of currencies
+            // send array of clients
             cursor.moveToFirst();
             ContentValues contentValues = null;
             while (cursor.isAfterLast() == false) {
 
                 Client client = new Client();
-                client.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+                //client.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                 client.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
                 client.setDireccion(cursor.getString(cursor.getColumnIndex("direccion")));
                 client.setEmail(cursor.getString(cursor.getColumnIndex("email")));
                 client.setTelefono(cursor.getString(cursor.getColumnIndex("telefono")));
-                client.setDireccion(cursor.getString(cursor.getColumnIndex("direccion")));
 
                 Log.d("SYNCADAPTER", client.toString());
                 Log.d("SYNCADAPTER", "cursor: " + cursor.getString(3));
 
                 int id = clientManager.createClient(client);
                 contentValues = new ContentValues();
-                contentValues.put("_id", cursor.getInt(cursor.getColumnIndex("id")));
+                contentValues.put("_id", cursor.getInt(cursor.getColumnIndex("_id")));
                 contentValues.put("name", client.getNombre());
                 contentValues.put("email", client.getEmail());
                 contentValues.put("telefono", client.getTelefono());

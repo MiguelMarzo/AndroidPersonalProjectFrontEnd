@@ -63,14 +63,14 @@ public class MainActivity extends AppCompatActivity implements
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        Log.i("PELLODEBUG", "Update data");
+                        Log.i("MigDebug", "Update data");
                         Toast.makeText(MainActivity.this, "Refreshing...", Toast.LENGTH_LONG).show();
                         MainActivity.this.syncNow(null);
                     }
                 }
         );
 
-        //setFloatingButtonListener();
+        setFloatingButtonListener();
     }
 
     private void setupCustomList(Cursor cursor) {
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Log.i("MigDebug", "Item selected");
         switch (item.getItemId()) {
             case 0:
                 Intent myIntent = new Intent(MainActivity.this, AddActivity.class);
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements
         while (!cursor.isAfterLast()) {
             data += "\n" + cursor.getString(1);
             cursor.moveToNext();
-            Log.d("PELLODEBUG", "Data: " + data);
+            //Log.d("PELLODEBUG", "Data: " + data);
         }
     }
 
@@ -202,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void setFloatingButtonListener() {
-        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.add);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

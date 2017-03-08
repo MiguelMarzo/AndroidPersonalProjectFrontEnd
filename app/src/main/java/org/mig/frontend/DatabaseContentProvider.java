@@ -150,17 +150,17 @@ public class DatabaseContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         Log.d("MigDebug","CP> insert " + uri);
         Client client = new Client();
-        client.setId(values.getAsInteger("_id"));
-        client.setNombre(values.getAsString("name"));
+        //client.setId(values.getAsInteger("_id"));
+        client.setNombre(values.getAsString("nombre"));
         client.setDireccion(values.getAsString("direccion"));
         client.setTelefono(values.getAsString("telefono"));
         client.setEmail(values.getAsString("email"));
-        client.setId_backend(values.getAsInteger("_id"));
+        client.setId_backend(values.getAsInteger("id_backend"));
+
         dbAdapter.insertarCliente(client);
         getContext().getContentResolver().notifyChange(uri, null);
         Uri resultUri = Uri.parse("content://org.mig.frontend.sqlprovider" + "clients");
         return resultUri;
-
     }
 
 
@@ -168,9 +168,13 @@ public class DatabaseContentProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
         Log.d("MigDebug","CP> " + uri);
-
-
-        return 0;
+        Client client = new Client();
+        client.setId(values.getAsInteger("_id"));
+        client.setNombre(values.getAsString("name"));
+        client.setDireccion(values.getAsString("direccion"));
+        client.setTelefono(values.getAsString("telefono"));
+        client.setEmail(values.getAsString("email"));
+        return dbAdapter.actualizarCliente(client.getId(), client);
 
     }
 }

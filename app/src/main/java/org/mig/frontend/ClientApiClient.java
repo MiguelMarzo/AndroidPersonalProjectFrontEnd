@@ -23,16 +23,16 @@ public interface ClientApiClient {
 			@Path("id") Long id);
 
 	@Headers("Accept: application/json")
-	@GET("last/{id}")
-	Call<List<Client>> lastClients(
+	@GET("springPractica/clientApi/last/{id}")
+	Call<List<Client>>  lastClients(
 			@Path("id") Integer id);
 	
 	@Headers("Accept: application/json")
-	@POST("springPractica/clientApi/create")
+	@POST("springPractica/clientApi/new")
     Call<Integer> create(@Body Client client);
 	
-	@PUT("springPractica/clientApi/update")
-    Call<Void> update(Client item);
+	@PUT("springPractica/clientApi/{id}")
+    Call<Void> update( Integer id,Client item);
 	
 	@DELETE("springPractica/clientApi/delete/{id}")
     Call<Void> delete(

@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class AddActivity extends AppCompatActivity {
 
     private String contentUri = "content://org.mig.frontend.sqlprovider";
-    private EditText editTextNombre, editTextEmail, editTextDireccion;
+    private EditText editTextNombre, editTextEmail, editTextDireccion, editTextTelefono;
     private Button button;
     private boolean isUpdating = false;
     private Client client;
@@ -26,6 +26,7 @@ public class AddActivity extends AppCompatActivity {
         editTextNombre = (EditText) findViewById(R.id.editTextNombre);
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
         editTextDireccion = (EditText) findViewById(R.id.editTextDireccion);
+        editTextTelefono = (EditText) findViewById(R.id.editTextTelefono);
         button = (Button) findViewById(R.id.button);
 
         Bundle extras = getIntent().getExtras();
@@ -70,6 +71,7 @@ public class AddActivity extends AppCompatActivity {
 
         contentValues.put("nombre", String.valueOf(editTextNombre.getText()));
         contentValues.put("email", String.valueOf(editTextEmail.getText()));
+        contentValues.put("telefono", String.valueOf(editTextTelefono.getText()));
         contentValues.put("direccion", Integer.valueOf(String.valueOf(editTextDireccion.getText())));
 
 
